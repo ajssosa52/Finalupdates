@@ -16,10 +16,7 @@
     NSLog(@"hi");
     if (self) {
         NSLog(@"hi");
-        //      self.ContactInfoFName = [[NSString alloc]init];
-        //     self.ContactInfoLName = [[NSString alloc]init];
-        //    self.ContactInfoCountry = [[NSString alloc]init];
-        // self.NewContacts = [[NSMutableArray alloc]init];
+
         NSString *docDirectory;
         NSArray *dirPath;
         
