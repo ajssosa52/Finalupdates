@@ -89,7 +89,8 @@
                     }else if (counter==36){
                         //optional map
                         self.dataToStore = [[NSArray alloc] initWithObjects:self.url,
-                                            self.PropertyLocation.text, self.ONameLabel.text, self.OMailingLabel.text, self.OMailngCityLabel.text, self.RefNum.text, self.PropertyTDist.text,self.propertyClassVal.text, self.AcreageVal.text, [NSDate date], nil];
+                                            self.PropertyLocation.text, self.ONameLabel.text, self.OMailingLabel.text, self.OMailngCityLabel.text, self.RefNum.text, self.PropertyTDist.text,self.propertyClassVal.text, self.AcreageVal.text, [NSDate date ] , nil];
+                        //NSTimeInterval *s = [[NSTimeInterval alloc] i:0];
                         NSLog(@"array to send %@", dataToStore);
                         [self.DataMang saveToDB:dataToStore];
                     }

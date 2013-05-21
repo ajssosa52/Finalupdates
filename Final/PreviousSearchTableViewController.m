@@ -37,10 +37,16 @@
     self.DataMang = [[DataStorage alloc] init];
     self.DatebaseArray = [[NSMutableArray alloc] init];
     self.DatebaseArray = [DataMang readBasicFromDataBase];
-    NSLog(@"Database values : %@", [DataMang readBasicFromDataBase]);
+    //NSLog(@"Database values : %@", [DataMang readBasicFromDataBase]);
     
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    self.DatebaseArray = [[NSMutableArray alloc] init];
+    self.DatebaseArray = [DataMang readBasicFromDataBase];
+    //NSLog(@"Database values : %@", [DataMang readBasicFromDataBase]);
+    [self.tableView reloadData];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

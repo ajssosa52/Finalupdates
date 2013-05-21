@@ -32,7 +32,7 @@
             if (sqlite3_open(dbPath, &propertyDB) == SQLITE_OK) {
                 char *errMsg;
                 
-                const char *sql_start="CREATE TABLE IF NOT EXISTS RECENTPROPERTIES (ID INTEGER PRIMARY KEY AUTOINCREMENT, PROPURL TEXT, PROPNAME TEXT, OWNERNAME TEXT, OWNERMAIL TEXT, OWNERMAILCITY TEXT, PARCELNUM TEXT, TAXDISTRICT TEXT, PCLASS TEXT, ACRES TEXT, CREATED DATETIME)";
+                const char *sql_start="CREATE TABLE IF NOT EXISTS RECENTPROPERTIES (ID INTEGER PRIMARY KEY AUTOINCREMENT, PROPURL TEXT, PROPNAME TEXT, OWNERNAME TEXT, OWNERMAIL TEXT, OWNERMAILCITY TEXT, PARCELNUM TEXT, TAXDISTRICT TEXT, PCLASS TEXT, ACRES TEXT, CREATED INTEGER)";
                 if (sqlite3_exec(propertyDB, sql_start, NULL, NULL, &errMsg) != SQLITE_OK) {
                     NSLog(@"Failed to create table");
                 }sqlite3_close(propertyDB);
@@ -48,6 +48,10 @@
 -(void)saveToDB:(NSArray *)propertyDetails{
     sqlite3_stmt *statement;
     const char *dbPath = [self.databasePath UTF8String];
+    
+    NSLog(@"time %f",round([((NSDate*)[propertyDetails objectAtIndex:9]) timeIntervalSince1970]) );
+    NSNumber *test =[NSNumber numberWithInt: round([((NSDate*)[propertyDetails objectAtIndex:9]) timeIntervalSince1970])];
+    NSLog(@"test %i", [test intValue]);
     //NSDateFormatter *dateform =[[NSDateFormatter alloc] init];
     //[dateform setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     //NSString *date = [dateform stringFromDate:((NSDate *)[propertyDetails objectAtIndex:9])];
@@ -55,18 +59,22 @@
     
     if (sqlite3_open(dbPath, &propertyDB) == SQLITE_OK) {
         NSString *insertSQL = [[NSString alloc]initWithFormat:
-                               @"INSERT INTO RECENTPROPERTIES (propurl ,propname, ownername, ownermail, ownermailcity, parcelnum, taxdistrict, pclass, acres, created) VALUES (\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\")",
-                               [propertyDetails objectAtIndex:0],[propertyDetails objectAtIndex:1],[propertyDetails objectAtIndex:2],[propertyDetails objectAtIndex:3],[propertyDetails objectAtIndex:4],[propertyDetails objectAtIndex:5],[propertyDetails objectAtIndex:6],[propertyDetails objectAtIndex:7],[propertyDetails objectAtIndex:8],[propertyDetails objectAtIndex:9]];
+                               @"INSERT INTO RECENTPROPERTIES (propurl ,propname, ownername, ownermail, ownermailcity, parcelnum, taxdistrict, pclass, acres, created) VALUES (\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",'%d')",
+                               [propertyDetails objectAtIndex:0],[propertyDetails objectAtIndex:1],[propertyDetails objectAtIndex:2],[propertyDetails objectAtIndex:3],[propertyDetails objectAtIndex:4],[propertyDetails objectAtIndex:5],[propertyDetails objectAtIndex:6],[propertyDetails objectAtIndex:7],[propertyDetails objectAtIndex:8],[test intValue] ];
         NSLog(@"%@",insertSQL);
         const char *insert_start = [insertSQL UTF8String];
         sqlite3_prepare_v2(propertyDB, insert_start, -1, &statement, NULL);
+        //sqlite3_bind_int(statement, 10, [test integerValue]);
         if(sqlite3_step(statement) == SQLITE_DONE){
             NSLog(@"Contact added");
 
         }else{
             NSLog(@"Failed to add Contact");
         }
+        sqlite3_finalize(statement);
         
+    }else{
+        sqlite3_close(propertyDB);
     }
     [self adjustDBtoSettings];
     
@@ -93,8 +101,10 @@
         }else{
             NSLog(@"ERROR");
         }
-
+        sqlite3_finalize(statement);
         
+    }else{
+        sqlite3_close(propertyDB);
     }
     if (count != 0) {
         [self deleteOldest:(count-[self.Settings finishedreadingnewfromSingleton])];
@@ -107,7 +117,7 @@
     while (i < counter) {
         sqlite3_stmt *statement;
         const char *dbPath = [self.databasePath UTF8String];
-        NSString *oldestVal = @"";
+        NSNumber *oldestVal;
         //NSDate *oldest;
         if (sqlite3_open(dbPath, &propertyDB) == SQLITE_OK) {
             //NSString *deleteSQL = [[NSString alloc]initWithFormat:@"DELETE FROM RECENTPROPERTIES WHERE created=(SELECT MIN(created) FROM RECENTPROPERTIES)"];
@@ -118,8 +128,9 @@
             if(sqlite3_step(statement) == SQLITE_ROW){
                 
               
-                NSLog(@"ROWS %s",sqlite3_column_text(statement, 0));
-                oldestVal = [[NSString alloc] initWithUTF8String:(const char*)sqlite3_column_text(statement, 0)];
+                NSLog(@"ROWS %i",sqlite3_column_int(statement, 0));
+                //oldestVal = [[NSString alloc] initWithUTF8String:(const char*)sqlite3_column_text(statement, 0)];
+                oldestVal =[[NSNumber alloc] initWithInt: sqlite3_column_int(statement, 0)];
                /* NSDateFormatter *dateFormater = [[NSDateFormatter alloc] init];
                 [dateFormater setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
                 [dateFormater setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
@@ -139,24 +150,27 @@
                     NSLog(@"Failed to Delete Contact");
                 }
                 */
+                sqlite3_finalize(statement);
             }else{
                 NSLog(@"Failed to Delete Contact");
             }
             
+        }else{
+            sqlite3_close(propertyDB);
         }
         if (oldestVal != NULL) {
-            sqlite3_stmt *statement2;
+            /*sqlite3_stmt *statement2;
             const char *dbPath2 = [self.databasePath UTF8String];
             //NSDate *oldest;
             if (sqlite3_open(dbPath2, &propertyDB) == SQLITE_OK) {
  
-                NSDateFormatter *dateFormater = [[NSDateFormatter alloc] init];
-                [dateFormater setDateFormat:@"yyyy-MM-dd HH:mm:ss zzzz"];
+                //NSDateFormatter *dateFormater = [[NSDateFormatter alloc] init];
+                //[dateFormater setDateFormat:@"yyyy-MM-dd HH:mm:ss zzzz"];
                 //[dateFormater setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-                NSDate *val= [dateFormater dateFromString:oldestVal];
-                NSLog(@"oldval %@  val %@",oldestVal,val);
-                NSString *deleteSQL = [[NSString alloc]initWithFormat:@"DELETE FROM RECENTPROPERTIES WHERE created='%@'",val];
-                     
+                //NSDate *val= [dateFormater dateFromString:oldestVal];
+                //NSLog(@"oldval %@  val %@",oldestVal,val);
+                NSString *deleteSQL = [[NSString alloc]initWithFormat:@"DELETE FROM RECENTPROPERTIES WHERE created=\'%i\'",oldestVal];
+                
                 NSLog(@"%@",deleteSQL);
                 const char *delete_start = [deleteSQL UTF8String];
                 sqlite3_prepare_v2(propertyDB, delete_start, -1, &statement2, NULL);
@@ -170,6 +184,35 @@
                 }
                 
                 
+            }*/
+            sqlite3_stmt *statement2;
+            const char *dbPath2 = [self.databasePath UTF8String];
+            
+            if (sqlite3_open(dbPath2, &propertyDB) == SQLITE_OK) {
+                NSString *insertSQL = [[NSString alloc]initWithFormat:@"DELETE FROM RECENTPROPERTIES WHERE created == '%d'", [oldestVal intValue]];
+                NSLog(@"%@",insertSQL);
+                const char *insert_start = [insertSQL UTF8String];
+                
+                sqlite3_prepare_v2(propertyDB, insert_start, -1, &statement2, NULL);
+               // sqlite3_bind_int(statement2, 1, [oldestVal integerValue]);
+               // char *error;
+                
+                if(sqlite3_step(statement2) == SQLITE_DONE){
+                //if(sqlite3_exec(propertyDB, insert_start, NULL, NULL, &error) == SQLITE_OK){
+                    NSLog(@"Contact Delete");
+                    //NSLog(@"error %s", error);
+                }else{
+                    NSLog(@"Failed to Delete Contact");
+                    //if (error !=NULL) {
+                    //    NSLog(@"error %s", error);
+
+                    //}
+            
+                }
+                sqlite3_finalize(statement2);
+                
+            }else{
+                sqlite3_close(propertyDB);
             }
 
         }
