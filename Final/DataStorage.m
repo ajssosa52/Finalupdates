@@ -46,6 +46,7 @@
     
 }
 -(void)saveToDB:(NSArray *)propertyDetails{
+    [self clearOlderRef:[propertyDetails objectAtIndex:0]];
     sqlite3_stmt *statement;
     const char *dbPath = [self.databasePath UTF8String];
     
@@ -231,6 +232,39 @@
     }
     return detailInfo;
 }
-
+-(void) deleteItem:(NSString *) itemurl{
+    sqlite3_stmt *statement2;
+    const char *dbPath2 = [self.databasePath UTF8String];
+    
+    if (sqlite3_open(dbPath2, &propertyDB) == SQLITE_OK) {
+        NSString *insertSQL = [[NSString alloc]initWithFormat:@"DELETE FROM RECENTPROPERTIES WHERE propurl == \"%@\"", itemurl];
+        // NSLog(@"%@",insertSQL);
+        const char *insert_start = [insertSQL UTF8String];
+        
+        sqlite3_prepare_v2(propertyDB, insert_start, -1, &statement2, NULL);
+        
+        
+        if(sqlite3_step(statement2) == SQLITE_DONE){
+            //if(sqlite3_exec(propertyDB, insert_start, NULL, NULL, &error) == SQLITE_OK){
+            NSLog(@"Contact Delete");
+        }else{
+            NSLog(@"Failed to Delete Contact");
+            //if (error !=NULL) {
+            //    NSLog(@"error %s", error);
+            
+            //}
+            
+        }
+        sqlite3_finalize(statement2);
+        
+    }else{
+        sqlite3_close(propertyDB);
+    }
+}
+-(void) clearOlderRef:(NSString *)checkurl{
+    if([self readBasicFromDataBase] != NULL){
+        [self deleteItem:checkurl];
+    }
+}
 
 @end
