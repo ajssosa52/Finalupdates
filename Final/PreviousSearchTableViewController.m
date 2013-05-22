@@ -134,7 +134,7 @@
     if ([segue.identifier isEqualToString:@"PropertyDetails"]) {
         NSIndexPath *datatransfer= [self.tableView indexPathForCell:sender];
         ResultViewController *secondVC= (ResultViewController *)segue.destinationViewController;
-        NSLog(@"object %@",[[self.DatebaseArray objectAtIndex:datatransfer.row] objectAtIndex:0] );
+        //NSLog(@"object %@",[[self.DatebaseArray objectAtIndex:datatransfer.row] objectAtIndex:0] );
         secondVC.url = (NSString *)[[self.DatebaseArray objectAtIndex:datatransfer.row] objectAtIndex:0];
         
     }

@@ -82,14 +82,14 @@
 
 -(void) adjustDBtoSettings{
     self.Settings = [SettingSingle sharedInstance];
-    NSLog(@"Selected %d",[self.Settings finishedreadingnewfromSingleton]);
+    //NSLog(@"Selected %d",[self.Settings finishedreadingnewfromSingleton]);
     sqlite3_stmt *statement;
     const char *dbPath = [self.databasePath UTF8String];
     int count = 0;
     if (sqlite3_open(dbPath, &propertyDB) == SQLITE_OK) {
         NSString *countSQL = [[NSString alloc]initWithFormat:
                                @"SELECT COUNT(*) FROM RECENTPROPERTIES"];
-        NSLog(@"%@",countSQL);
+        //NSLog(@"%@",countSQL);
         const char *count_start = [countSQL UTF8String];
         if(sqlite3_prepare_v2(propertyDB, count_start, -1, &statement, NULL)== SQLITE_OK){
             if(sqlite3_step(statement) == SQLITE_ROW){
@@ -112,7 +112,7 @@
 }
 
 -(void) deleteOldest:(NSInteger)counter{
-    NSLog(@"delete %d", counter );
+    //NSLog(@"delete %d", counter );
     int i =0;
     while (i < counter) {
         sqlite3_stmt *statement;
@@ -131,25 +131,7 @@
                 NSLog(@"ROWS %i",sqlite3_column_int(statement, 0));
                 //oldestVal = [[NSString alloc] initWithUTF8String:(const char*)sqlite3_column_text(statement, 0)];
                 oldestVal =[[NSNumber alloc] initWithInt: sqlite3_column_int(statement, 0)];
-               /* NSDateFormatter *dateFormater = [[NSDateFormatter alloc] init];
-                [dateFormater setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-                [dateFormater setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-                NSDate *val= [dateFormater dateFromString:oldestVal];
-                [dateFormater setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-                NSLog(@"oldval %@  val %@",oldestVal,val);
-                NSString *deleteSQL = [[NSString alloc]initWithFormat:@"DELETE FROM RECENTPROPERTIES WHERE created=\"%@\"",val];
-            
-                NSLog(@"%@",deleteSQL);
-                const char *delete_start = [deleteSQL UTF8String];
-                sqlite3_prepare_v2(propertyDB, delete_start, -1, &statement, NULL);
-                if(sqlite3_step(statement) == SQLITE_ROW){
-                    //NSLog(@"ROWS %s",sqlite3_column_text(statement, 0));
-                    //oldestVal = (const char*)sqlite3_column_text(statement, 0);
-                    NSLog(@"Contact Delete");
-                }else{
-                    NSLog(@"Failed to Delete Contact");
-                }
-                */
+
                 sqlite3_finalize(statement);
             }else{
                 NSLog(@"Failed to Delete Contact");
@@ -159,48 +141,21 @@
             sqlite3_close(propertyDB);
         }
         if (oldestVal != NULL) {
-            /*sqlite3_stmt *statement2;
-            const char *dbPath2 = [self.databasePath UTF8String];
-            //NSDate *oldest;
-            if (sqlite3_open(dbPath2, &propertyDB) == SQLITE_OK) {
- 
-                //NSDateFormatter *dateFormater = [[NSDateFormatter alloc] init];
-                //[dateFormater setDateFormat:@"yyyy-MM-dd HH:mm:ss zzzz"];
-                //[dateFormater setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-                //NSDate *val= [dateFormater dateFromString:oldestVal];
-                //NSLog(@"oldval %@  val %@",oldestVal,val);
-                NSString *deleteSQL = [[NSString alloc]initWithFormat:@"DELETE FROM RECENTPROPERTIES WHERE created=\'%i\'",oldestVal];
-                
-                NSLog(@"%@",deleteSQL);
-                const char *delete_start = [deleteSQL UTF8String];
-                sqlite3_prepare_v2(propertyDB, delete_start, -1, &statement2, NULL);
-                
-                if(sqlite3_step(statement2) == SQLITE_DONE){
-                     //NSLog(@"ROWS %s",sqlite3_column_text(statement, 0));
-                     //oldestVal = (const char*)sqlite3_column_text(statement, 0);
-                     NSLog(@"Contact Delete");
-                }else{
-                     NSLog(@"Failed to Delete Contact");
-                }
-                
-                
-            }*/
+
             sqlite3_stmt *statement2;
             const char *dbPath2 = [self.databasePath UTF8String];
             
             if (sqlite3_open(dbPath2, &propertyDB) == SQLITE_OK) {
                 NSString *insertSQL = [[NSString alloc]initWithFormat:@"DELETE FROM RECENTPROPERTIES WHERE created == '%d'", [oldestVal intValue]];
-                NSLog(@"%@",insertSQL);
+               // NSLog(@"%@",insertSQL);
                 const char *insert_start = [insertSQL UTF8String];
                 
                 sqlite3_prepare_v2(propertyDB, insert_start, -1, &statement2, NULL);
-               // sqlite3_bind_int(statement2, 1, [oldestVal integerValue]);
-               // char *error;
+ 
                 
                 if(sqlite3_step(statement2) == SQLITE_DONE){
                 //if(sqlite3_exec(propertyDB, insert_start, NULL, NULL, &error) == SQLITE_OK){
                     NSLog(@"Contact Delete");
-                    //NSLog(@"error %s", error);
                 }else{
                     NSLog(@"Failed to Delete Contact");
                     //if (error !=NULL) {
