@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <MapKit/MapKit.h>
+//#import <MapKit/MapKit.h>
 @interface MapViewController : UIViewController 
 
-@property (weak, nonatomic) IBOutlet MKMapView *MyLocalMap;
+//@property (weak, nonatomic) IBOutlet MKMapView *MyLocalMap;
 
-
-
+@property (weak, nonatomic) IBOutlet UIWebView *UIWeb;
+@property (strong, nonatomic) NSURL *mapURL;
 @end

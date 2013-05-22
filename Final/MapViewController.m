@@ -13,14 +13,15 @@
 @end
 
 @implementation MapViewController
-
+@synthesize mapURL;
+/*
 #define lat 51.434783
 #define longat -0.213428
 //span (zoom)
 
 #define spans 0.01f;
-
-@synthesize MyLocalMap;
+*/
+//@synthesize MyLocalMap;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -34,7 +35,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    MKCoordinateRegion myRegion;
+/*    MKCoordinateRegion myRegion;
     CLLocationCoordinate2D center;
     center.latitude = lat;
     center.longitude = longat;
@@ -49,8 +50,13 @@
     [MyLocalMap setRegion:myRegion animated:YES];
     NSLog(@"test%@", MyLocalMap.overlays);
 	// Do any additional setup after loading the view.
+ */
 }
-
+- (void)viewWillAppear:(BOOL)animated{
+    NSURLRequest *request = [NSURLRequest requestWithURL:self.mapURL];
+    self.UIWeb.scalesPageToFit = YES;
+    [self.UIWeb loadRequest:request];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

@@ -7,6 +7,8 @@
 //
 
 #import "ResultViewController.h"
+#import <Social/Social.h>
+#import "MapViewController.h"
 
 @interface ResultViewController ()
 @property dispatch_queue_t globalQ;
@@ -16,6 +18,7 @@
 @synthesize url;
 @synthesize DataMang;
 @synthesize dataToStore;
+@synthesize mapURL;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -88,6 +91,8 @@
                         //NSLog(@"elements values for  %d :%@",i,[[element.children objectAtIndex:x] content]);
                         self.propertyClassVal.text = [[element.children objectAtIndex:x] content];
                     }else if (counter==36){
+                        self.mapURL =[[element.children objectAtIndex:x] objectForKey:@"href"];
+                        NSLog(@"map: %@",mapURL);
                         //optional map
                         self.dataToStore = [[NSArray alloc] initWithObjects:self.url,
                                             self.PropertyLocation.text, self.ONameLabel.text, self.OMailingLabel.text, self.OMailngCityLabel.text, self.RefNum.text, self.PropertyTDist.text,self.propertyClassVal.text, self.AcreageVal.text, [NSDate date ] , nil];
@@ -111,4 +116,29 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)FaceBookBut:(id)sender {
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
+        SLComposeViewController *composeCont = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+        //UIImage *postImage = [UIImage imageNamed:@"food.png"];
+        UIGraphicsBeginImageContext(self.view.bounds.size);
+        //CGContextRef ct =UIGraphicsGetCurrentContext();
+        //[self.restMap.layer renderInContext:UIGraphicsGetCurrentContext()];
+        //UIImage *postImage = UIGraphicsGetImageFromCurrentImageContext();
+        [composeCont setInitialText: [NSString stringWithFormat:@"Nice Property at %@",self.PropertyLocation.text]];
+        [self presentViewController:composeCont animated:YES completion:nil];
+    }
+    
+}
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+    if ([segue.identifier isEqualToString:@"MapView"]) {
+        NSURL *mapviewurl= [NSURL URLWithString:self.mapURL];
+        
+        
+        
+        MapViewController *secondVC= (MapViewController *)segue.destinationViewController;
+        secondVC.mapURL =mapviewurl;
+        
+    }
+}
 @end

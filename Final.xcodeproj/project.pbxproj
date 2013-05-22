@@ -36,6 +36,7 @@
 		76798D38174A7A30000C1620 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 76798D37174A7A30000C1620 /* libsqlite3.dylib */; };
 		76798D3B174A8C4A000C1620 /* PreviousSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76798D3A174A8C4A000C1620 /* PreviousSearchTableViewController.m */; };
 		76798D3D174A943E000C1620 /* IPadStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76798D3C174A943E000C1620 /* IPadStoryboard.storyboard */; };
+		767C5327174C6219008F6B3D /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 767C5326174C6219008F6B3D /* Social.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -85,6 +86,7 @@
 		76798D39174A8C49000C1620 /* PreviousSearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviousSearchTableViewController.h; sourceTree = "<group>"; };
 		76798D3A174A8C4A000C1620 /* PreviousSearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviousSearchTableViewController.m; sourceTree = "<group>"; };
 		76798D3C174A943E000C1620 /* IPadStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = IPadStoryboard.storyboard; sourceTree = "<group>"; };
+		767C5326174C6219008F6B3D /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				767C5327174C6219008F6B3D /* Social.framework in Frameworks */,
 				76798D38174A7A30000C1620 /* libsqlite3.dylib in Frameworks */,
 				43974EBF1741DF5500546107 /* libxml2.dylib in Frameworks */,
 				439DE831172DF9DA00ED357D /* CoreLocation.framework in Frameworks */,
@@ -153,6 +156,7 @@
 			isa = PBXGroup;
 			children = (
 				43974EBE1741DF5500546107 /* libxml2.dylib */,
+				767C5326174C6219008F6B3D /* Social.framework */,
 				439DE830172DF9DA00ED357D /* CoreLocation.framework */,
 				439DE82B172DD09C00ED357D /* MapKit.framework */,
 				439DE808172DCF0300ED357D /* UIKit.framework */,

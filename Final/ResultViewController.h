@@ -18,7 +18,7 @@
 @property (strong,nonatomic) NSArray *dataToStore;
 
 @property (strong, nonatomic) NSString *url;
-//@property (strong, nonatomic) SettingSingle *Settings;
+@property (strong, nonatomic) NSString *mapURL;
 
 @property (weak, nonatomic) IBOutlet UILabel *StatusLabel;
 @property (weak, nonatomic) IBOutlet UILabel *ONameLabel;
@@ -29,5 +29,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *RefNum;
 @property (weak, nonatomic) IBOutlet UILabel *AcreageVal;
 @property (weak, nonatomic) IBOutlet UILabel *propertyClassVal;
+- (IBAction)FaceBookBut:(id)sender;
 
 @end
