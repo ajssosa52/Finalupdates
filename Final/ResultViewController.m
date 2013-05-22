@@ -19,6 +19,7 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
+    NSLog(@"hi");
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -32,7 +33,7 @@
     // Do any additional setup after loading the view.
     self.DataMang = [[DataStorage alloc] init];
     
-    
+    NSLog(@"hi");
     _globalQ =dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     NSURL *htmlURL = [NSURL URLWithString:self.url];
     NSLog(@"url :%@",self.url);

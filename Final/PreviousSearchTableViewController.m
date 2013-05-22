@@ -7,7 +7,7 @@
 //
 
 #import "PreviousSearchTableViewController.h"
-
+#import "ResultViewController.h"
 @interface PreviousSearchTableViewController ()
 
 @end
@@ -129,5 +129,14 @@
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
 }
-
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+    if ([segue.identifier isEqualToString:@"PropertyDetails"]) {
+        NSIndexPath *datatransfer= [self.tableView indexPathForCell:sender];
+        ResultViewController *secondVC= (ResultViewController *)segue.destinationViewController;
+        NSLog(@"object %@",[[self.DatebaseArray objectAtIndex:datatransfer.row] objectAtIndex:0] );
+        secondVC.url = (NSString *)[[self.DatebaseArray objectAtIndex:datatransfer.row] objectAtIndex:0];
+        
+    }
+}
 @end

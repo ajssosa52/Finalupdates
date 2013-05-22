@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AddressViewController : UIViewController
+@interface AddressViewController : UIViewController <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *AddressNum;
 @property (weak, nonatomic) IBOutlet UITextField *AddressName;
