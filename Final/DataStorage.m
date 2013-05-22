@@ -207,7 +207,7 @@
     NSArray *detailInfo;
     const char *dbPath = [self.databasePath UTF8String];
     if (sqlite3_open(dbPath, &propertyDB) == SQLITE_OK) {
-        NSString *querySQL= [NSString stringWithFormat:@"SELECT propname, ownername, ownermail, ownermailcity, parcelnum, taxdistrict, pclass, acres FROM RECENTPROPERTIES WHERE popurl=\"%@\"", propertyUrl];
+        NSString *querySQL= [NSString stringWithFormat:@"SELECT propname, ownername, ownermail, ownermailcity, parcelnum, taxdistrict, pclass, acres FROM RECENTPROPERTIES WHERE propurl=\"%@\"", propertyUrl];
         const char *query_start = [querySQL UTF8String];
         if(sqlite3_prepare_v2(propertyDB, query_start, -1, &statement, NULL)== SQLITE_OK){
             if(sqlite3_step(statement) == SQLITE_ROW){
@@ -219,7 +219,7 @@
                 NSString *taxDist= [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 5)];
                 NSString *pClass= [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 6)];
                 NSString *acres= [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 7)];
-                detailInfo = [[NSArray alloc] initWithObjects:propertyUrl, propname, ownername, ownerMail, ownerMailCity, parcelNum,taxDist,pClass,acres, nil];
+                detailInfo = [[NSArray alloc] initWithObjects: ownername, ownerMail, ownerMailCity,propname, parcelNum,taxDist,acres,pClass, nil];
                 NSLog(@"Match Found");
             }else{
                 NSLog(@"Match Not Found");

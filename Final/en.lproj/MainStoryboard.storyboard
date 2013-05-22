@@ -371,6 +371,8 @@
                         <outlet property="PropertyTDist" destination="Q61-lm-84u" id="SVg-Un-vBN"/>
                         <outlet property="RefNum" destination="Xks-MM-Jz4" id="FID-zz-xap"/>
                         <outlet property="StatusLabel" destination="2M0-9R-A6i" id="gyO-EY-PVF"/>
+                        <outlet property="facebookButRef" destination="XjR-aS-F1L" id="vGK-Q3-qbs"/>
+                        <outlet property="mapBut" destination="Iw5-7M-KeZ" id="JZw-38-7lq"/>
                         <outlet property="propertyClassVal" destination="Ote-ac-QUe" id="aKQ-lx-ne3"/>
                     </connections>
                 </viewController>

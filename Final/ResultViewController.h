@@ -29,6 +29,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *RefNum;
 @property (weak, nonatomic) IBOutlet UILabel *AcreageVal;
 @property (weak, nonatomic) IBOutlet UILabel *propertyClassVal;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *mapBut;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *facebookButRef;
 - (IBAction)FaceBookBut:(id)sender;
 
 @end
